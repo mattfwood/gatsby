@@ -119,7 +119,7 @@ module.exports = async (
         // A temp file required by static-site-generator-plugin. See plugins() below.
         // Deleted by build-html.js, since it's not needed for production.
         return {
-          path: directoryPath(`public`),
+          path: directoryPath(process.env.SITE_NAME ? `sites/${process.env.SITE_NAME}` : `public`),
           filename: `render-page.js`,
           libraryTarget: `umd`,
           library: `lib`,
@@ -133,7 +133,7 @@ module.exports = async (
         return {
           filename: `[name]-[contenthash].js`,
           chunkFilename: `[name]-[contenthash].js`,
-          path: directoryPath(`public`),
+          path: directoryPath(process.env.SITE_NAME ? `sites/${process.env.SITE_NAME}` : `public`),
           publicPath: program.prefixPaths
             ? `${store.getState().config.pathPrefix}/`
             : `/`,
@@ -234,11 +234,11 @@ module.exports = async (
                   }
 
                   fs.writeFile(
-                    path.join(`public`, `chunk-map.json`),
+                    path.join(process.env.SITE_NAME ? `sites/${process.env.SITE_NAME}` : `public`, `chunk-map.json`),
                     JSON.stringify(assetsMap),
                     () => {
                       fs.writeFile(
-                        path.join(`public`, `webpack.stats.json`),
+                        path.join(process.env.SITE_NAME ? `sites/${process.env.SITE_NAME}` : `public`, `webpack.stats.json`),
                         JSON.stringify(webpackStats),
                         done
                       )
